@@ -1,8 +1,7 @@
 package cn.tedu.submarine;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.Random;
 
 public abstract class SeaObject {
@@ -21,7 +20,7 @@ public abstract class SeaObject {
     public SeaObject(int width, int height) {
         this.width = width;
         this.height = height;
-        x = -width;
+        x = width;
         Random rd = new Random();
         y = rd.nextInt(World.HEIGHT - height - 150 + 1) + 150;
         speed = rd.nextInt(3) + 1;

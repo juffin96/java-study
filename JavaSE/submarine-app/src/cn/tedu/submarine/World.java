@@ -2,6 +2,7 @@ package cn.tedu.submarine;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.Graphics;
 
 /**
  * 游戏窗口
@@ -24,17 +25,30 @@ public class World extends JPanel {
             new Bomb(300, 400)
     };
 
+    public void paint(Graphics g){
+        Images.sea.paintIcon(null, g, 0, 0);
+        ship.paintImage(g);
+        for (int i = 0; i < submarines.length; i++) {
+            submarines[i].paintImage(g);
+        }
+        for (int i = 0; i < mines.length; i++) {
+            mines[i].paintImage(g);
+        }
+        for (int i = 0; i < bombs.length; i++) {
+            bombs[i].paintImage(g);
+        }
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         World world = new World();
         world.setFocusable(true);
         frame.add(world);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(WIDTH + 16, HEIGHT + 39);
+        frame.setSize(WIDTH + 6, HEIGHT + 29);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
-
     }
 
 
