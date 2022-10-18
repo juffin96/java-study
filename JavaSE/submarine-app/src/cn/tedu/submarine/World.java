@@ -16,7 +16,7 @@ public class World extends JPanel {
     private SeaObject[] submarines = {
             new ObserveSubmarine(),
             new MineSubmarine(),
-            new MineSubmarine()
+            new TorpedoSubmarine()
     };
     private Mine[] mines = {
             new Mine(200, 300)
@@ -26,14 +26,19 @@ public class World extends JPanel {
     };
 
     public void paint(Graphics g){
+        //画海洋
         Images.sea.paintIcon(null, g, 0, 0);
+        //画战舰
         ship.paintImage(g);
+        //遍历潜艇
         for (int i = 0; i < submarines.length; i++) {
             submarines[i].paintImage(g);
         }
+        //遍历水雷
         for (int i = 0; i < mines.length; i++) {
             mines[i].paintImage(g);
         }
+        //遍历炸弹
         for (int i = 0; i < bombs.length; i++) {
             bombs[i].paintImage(g);
         }
@@ -41,6 +46,7 @@ public class World extends JPanel {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
+        //会创建上面的所有对象
         World world = new World();
         world.setFocusable(true);
         frame.add(world);
@@ -48,8 +54,7 @@ public class World extends JPanel {
         frame.setSize(WIDTH + 6, HEIGHT + 29);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
+        //会自动调用paint()方法
         frame.setVisible(true);
     }
-
-
 }
