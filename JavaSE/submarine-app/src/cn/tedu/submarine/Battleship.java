@@ -1,6 +1,6 @@
 package cn.tedu.submarine;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 /**
  * 战舰

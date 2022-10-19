@@ -1,6 +1,6 @@
 package cn.tedu.submarine;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 /**
  * 鱼雷潜艇
@@ -9,12 +9,11 @@ public class TorpedoSubmarine extends SeaObject{
 
     public TorpedoSubmarine() {
         super(64, 20);
-
     }
 
     @Override
     public void move(){
-        System.out.println("鱼雷潜艇x向右移动...");
+        x += speed;
     }
 
     @Override

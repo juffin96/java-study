@@ -20,7 +20,7 @@ public abstract class SeaObject {
     public SeaObject(int width, int height) {
         this.width = width;
         this.height = height;
-        x = width;
+        x = -width;
         Random rd = new Random();
         y = rd.nextInt(World.HEIGHT - height - 150 + 1) + 150;
         speed = rd.nextInt(3) + 1;
