@@ -27,7 +27,7 @@ public abstract class SeaObject {
         this.height = height;
         x = -width;
         Random r = new Random();
-        y = r.nextInt(World.HEIGHT - height + 1) + 150;
+        y = r.nextInt(World.HEIGHT - height - 150 + 1) + 150;
         speed = r.nextInt(3) + 1;
     }
 

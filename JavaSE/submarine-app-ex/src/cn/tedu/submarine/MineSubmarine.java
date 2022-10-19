@@ -11,7 +11,7 @@ public class MineSubmarine extends SeaObject{
     }
 
     public Mine shootMine(){
-        return new Mine(this.x + this.width, this.y - 12);
+        return new Mine(this.x + this.width, this.y - 11);
     }
 
     @Override

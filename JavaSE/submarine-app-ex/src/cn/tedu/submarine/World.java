@@ -101,6 +101,8 @@ public class World extends JLabel{
         frame.add(world);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(WIDTH + 6, HEIGHT + 29);
+        frame.setTitle("潜艇大战");
+        frame.setIconImage(new ImageIcon("img/mine.png").getImage());
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
