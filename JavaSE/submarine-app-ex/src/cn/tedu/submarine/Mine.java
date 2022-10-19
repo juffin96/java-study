@@ -12,7 +12,7 @@ public class Mine extends SeaObject{
 
     @Override
     public void move() {
-        System.out.println("水雷y向上移动。。。");
+        y -= speed;
     }
 
     @Override

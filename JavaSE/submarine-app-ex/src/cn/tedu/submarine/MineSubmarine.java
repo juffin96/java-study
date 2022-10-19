@@ -10,9 +10,13 @@ public class MineSubmarine extends SeaObject{
         super(63, 19);
     }
 
+    public Mine shootMine(){
+        return new Mine(this.x + this.width, this.y - 12);
+    }
+
     @Override
     public void move() {
-        System.out.println("水雷潜艇x向右移动。。。");
+        x += speed;
     }
 
     @Override

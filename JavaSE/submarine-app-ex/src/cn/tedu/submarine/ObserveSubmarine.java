@@ -12,7 +12,7 @@ public class ObserveSubmarine extends SeaObject{
 
     @Override
     public void move() {
-        System.out.println("侦察潜艇x向右移动。。");
+        x += speed;
     }
 
     @Override

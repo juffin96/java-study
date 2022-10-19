@@ -11,11 +11,11 @@ public abstract class SeaObject {
     public static final int LIVE = 0;
     public static final int DEAD = 1;
     private int state = LIVE;
-    private int width;
-    private int height;
-    private int x;
-    private int y;
-    private int speed;
+    int width;
+    int height;
+    int x;
+    int y;
+    int speed;
 
     /**
      * 所有潜艇的构造器
@@ -25,7 +25,7 @@ public abstract class SeaObject {
     public SeaObject(int width, int height){
         this.width = width;
         this.height = height;
-        x = width;
+        x = -width;
         Random r = new Random();
         y = r.nextInt(World.HEIGHT - height + 1) + 150;
         speed = r.nextInt(3) + 1;

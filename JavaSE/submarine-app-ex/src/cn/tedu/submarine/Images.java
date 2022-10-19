@@ -15,7 +15,7 @@ public class Images {
     public static ImageIcon torpedoSubmarine;
     public static ImageIcon gameOver;
 
-    /**
+    /*
      * 初始化静态图片
      */
     static {
