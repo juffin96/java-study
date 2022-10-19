@@ -13,7 +13,7 @@ public class Bomb extends SeaObject{
 
     @Override
     public void move(){
-        System.out.println("炸弹y向下动");
+        y += speed;
     }
 
     @Override

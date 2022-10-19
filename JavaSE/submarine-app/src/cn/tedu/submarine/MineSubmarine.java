@@ -11,6 +11,10 @@ public class MineSubmarine extends SeaObject{
         super(63, 19);
     }
 
+    public Mine shootMine(){
+        return new Mine(this.x + this.width, this.y - 11);
+    }
+
     @Override
     public void move(){
         x += speed;

@@ -23,7 +23,7 @@ public class Battleship extends SeaObject{
 
     @Override
     public void move(){
-        System.out.println("战舰x左右移动...");
+
     }
 
     @Override

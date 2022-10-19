@@ -54,10 +54,10 @@ public class World extends JPanel {
      */
     private SeaObject nextSubmarine(){
         int random = new Random().nextInt(20);
-        if (random < 10){
-            return new TorpedoSubmarine();
-        } else if (random < 16) {
+        if (random < 7){
             return new ObserveSubmarine();
+        } else if (random < 16) {
+            return new TorpedoSubmarine();
         }
         return new MineSubmarine();
     }
@@ -76,11 +76,35 @@ public class World extends JPanel {
     }
 
     /**
+     * 水雷进场
+     */
+    private int mineEnterIndex = 0;
+    private void mineEnterAction() {
+        mineEnterIndex++;
+        if (mineEnterIndex % 100 == 0){
+            for (int i = 0; i < submarines.length; i++) {
+                MineSubmarine mineSubmarine = submarines[i] instanceof MineSubmarine ? ((MineSubmarine) submarines[i]) : null;
+                if (mineSubmarine != null){
+                    Mine mine = mineSubmarine.shootMine();
+                    mines = Arrays.copyOf(mines, mines.length + 1);
+                    mines[mines.length - 1] = mine;
+                }
+            }
+        }
+    }
+
+    /**
      * 移动
      */
-    private void stepAction(){
+    private void moveAction(){
         for (int i = 0; i < submarines.length; i++) {
             submarines[i].move();
+        }
+        for (int i = 0; i < mines.length; i++) {
+            mines[i].move();
+        }
+        for (int i = 0; i < bombs.length; i++) {
+            bombs[i].move();
         }
     }
 
@@ -95,10 +119,11 @@ public class World extends JPanel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                //TODO 各元素的进场
+                //各元素的进场
                 submarineEnterAction();
+                mineEnterAction();
                 //移动
-                stepAction();
+                moveAction();
                 //重画
                 repaint();
             }
