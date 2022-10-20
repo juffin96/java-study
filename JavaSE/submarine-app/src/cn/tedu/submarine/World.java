@@ -73,11 +73,11 @@ public class World extends JPanel {
         return new MineSubmarine();
     }
 
+    private int submarineEnterIndex = 0;
+
     /**
      * 潜艇进场
      */
-    private int submarineEnterIndex = 0;
-
     private void submarineEnterAction() {
         submarineEnterIndex++;
         if (submarineEnterIndex % 40 == 0) {
@@ -87,11 +87,12 @@ public class World extends JPanel {
         }
     }
 
+
+    private int mineEnterIndex = 0;
+
     /**
      * 水雷进场
      */
-    private int mineEnterIndex = 0;
-
     private void mineEnterAction() {
         mineEnterIndex++;
         if (mineEnterIndex % 100 == 0) {
@@ -147,6 +148,9 @@ public class World extends JPanel {
 
     private int score = 0;
 
+    /**
+     * 炸弹和潜艇碰撞
+     */
     private void bombBangAction() {
         for (int i = 0; i < bombs.length; i++) {
             Bomb b = bombs[i];
@@ -171,6 +175,9 @@ public class World extends JPanel {
         }
     }
 
+    /**
+     * 水雷和战舰碰撞
+     */
     private void mineBangAction() {
         for (int i = 0; i < mines.length; i++) {
             Mine m = mines[i];
@@ -181,6 +188,9 @@ public class World extends JPanel {
         }
     }
 
+    /**
+     * 游戏结束
+     */
     private void checkGameOverAction() {
         if (ship.getLife() <= 0) {
             state = GAME_OVER;
@@ -191,7 +201,9 @@ public class World extends JPanel {
      * 启动程序的执行
      */
     private void action() {
+        //生成监听器
         KeyAdapter k = new KeyAdapter() {
+            //重写键盘按下事件
             @Override
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_P) {
@@ -235,9 +247,11 @@ public class World extends JPanel {
                     moveAction();
                     //删除越界元素
                     outOfBoundsAction();
-                    //炸弹爆炸
+                    //炸弹碰撞事件
                     bombBangAction();
+                    //水雷碰撞事件
                     mineBangAction();
+                    //游戏结束
                     checkGameOverAction();
                     //重画
                     repaint();
