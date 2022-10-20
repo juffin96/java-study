@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
  * 战舰
  */
 public class Battleship extends SeaObject {
-    private int life = 5;
+    private int life;
 
     public Battleship() {
         super(66, 26, 270, 124, 20);
@@ -15,10 +15,6 @@ public class Battleship extends SeaObject {
 
     public int getLife() {
         return life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
     }
 
     @Override

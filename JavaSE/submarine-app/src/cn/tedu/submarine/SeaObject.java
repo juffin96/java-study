@@ -49,6 +49,8 @@ public abstract class SeaObject {
 
     /**
      * 判断对象是否死亡
+     *
+     * @return true 死亡
      */
     public boolean isDead() {
         return state == DEAD;
@@ -56,6 +58,8 @@ public abstract class SeaObject {
 
     /**
      * 判断对象是否存活
+     *
+     * @return true 存活
      */
     public boolean isLive() {
         return state == LIVE;
@@ -96,6 +100,9 @@ public abstract class SeaObject {
         return x >= x1 && x <= x2 && y >= y1 && y <= y2;
     }
 
+    /**
+     * 物体死亡
+     */
     public void goDead() {
         state = DEAD;
     }

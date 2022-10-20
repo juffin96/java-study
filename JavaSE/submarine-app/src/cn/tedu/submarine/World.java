@@ -21,7 +21,6 @@ public class World extends JPanel {
     public static final int PAUSE = 1;
     public static final int GAME_OVER = 2;
     private int state = RUNNING;
-    //如下就是窗口中所看到的对象
     private static final Battleship ship = new Battleship();
     private static SeaObject[] submarines = {};
     private static Mine[] mines = {};
