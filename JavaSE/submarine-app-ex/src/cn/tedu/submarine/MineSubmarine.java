@@ -1,16 +1,16 @@
 package cn.tedu.submarine;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 /**
  * 水雷潜艇类
  */
-public class MineSubmarine extends SeaObject{
+public class MineSubmarine extends SeaObject implements EnemyLife {
     public MineSubmarine() {
         super(63, 19);
     }
 
-    public Mine shootMine(){
+    public Mine shootMine() {
         return new Mine(this.x + this.width, this.y - 11);
     }
 
@@ -22,5 +22,10 @@ public class MineSubmarine extends SeaObject{
     @Override
     public ImageIcon readImage() {
         return Images.mineSubmarine;
+    }
+
+    @Override
+    public int getLife() {
+        return 1;
     }
 }

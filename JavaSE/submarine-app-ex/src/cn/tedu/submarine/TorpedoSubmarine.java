@@ -1,11 +1,11 @@
 package cn.tedu.submarine;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 /**
  * 鱼雷潜艇类
  */
-public class TorpedoSubmarine extends SeaObject{
+public class TorpedoSubmarine extends SeaObject implements EnemyScore {
     public TorpedoSubmarine() {
         super(64, 20);
     }
@@ -18,5 +18,10 @@ public class TorpedoSubmarine extends SeaObject{
     @Override
     public ImageIcon readImage() {
         return Images.torpedoSubmarine;
+    }
+
+    @Override
+    public int getScore() {
+        return 1;
     }
 }

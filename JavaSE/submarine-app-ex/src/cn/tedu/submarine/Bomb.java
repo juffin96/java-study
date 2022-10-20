@@ -1,6 +1,6 @@
 package cn.tedu.submarine;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 /**
  * 炸弹类
@@ -18,5 +18,9 @@ public class Bomb extends SeaObject {
     @Override
     public ImageIcon readImage() {
         return Images.bomb;
+    }
+
+    public boolean isOutOfBounds() {
+        return this.y >= World.HEIGHT;
     }
 }
