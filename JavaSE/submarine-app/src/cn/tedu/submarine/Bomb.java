@@ -5,14 +5,14 @@ import javax.swing.ImageIcon;
 /**
  * 炸弹
  */
-public class Bomb extends SeaObject{
+public class Bomb extends SeaObject {
 
     public Bomb(int x, int y) {
         super(9, 12, x, y, 3);
     }
 
     @Override
-    public void move(){
+    public void move() {
         y += speed;
     }
 
@@ -21,4 +21,8 @@ public class Bomb extends SeaObject{
         return Images.bomb;
     }
 
+    @Override
+    public boolean isOutOfBounds() {
+        return this.y >= World.HEIGHT;
+    }
 }
