@@ -59,4 +59,27 @@ public abstract class FlyingObject {
      * 飞行物移动
      */
     public abstract void step();
+
+    /**
+     * 飞行物是否越界
+     *
+     * @return true 越界
+     */
+    public boolean isOutOfBounds() {
+        return this.y >= World.HEIGHT;
+    }
+
+    public boolean isHit(FlyingObject other) {
+        int x1 = this.x - other.width;
+        int x2 = this.x + this.width;
+        int y1 = this.y - other.height;
+        int y2 = this.y + this.height;
+        int x = other.x;
+        int y = other.y;
+        return x1 <= x && x <= x2 && y1 < y && y <= y2;
+    }
+
+    public void goDead() {
+        state = DEAD;
+    }
 }

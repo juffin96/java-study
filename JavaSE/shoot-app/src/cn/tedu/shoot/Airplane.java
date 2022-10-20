@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 /**
  * 小敌机
  */
-public class Airplane extends FlyingObject {
+public class Airplane extends FlyingObject implements EnemyScore {
     private int speed; // 速度
 
     public Airplane() {
@@ -32,5 +32,10 @@ public class Airplane extends FlyingObject {
             return img;
         }
         return null;
+    }
+
+    @Override
+    public int getScore() {
+        return 1;
     }
 }

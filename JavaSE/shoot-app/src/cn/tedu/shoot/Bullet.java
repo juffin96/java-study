@@ -28,4 +28,14 @@ public class Bullet extends FlyingObject {
     public void step() {
         y -= speed;
     }
+
+    /**
+     * 子弹是否越界
+     *
+     * @return true 越界
+     */
+    @Override
+    public boolean isOutOfBounds() {
+        return y <= -height;
+    }
 }

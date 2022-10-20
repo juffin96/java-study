@@ -1,12 +1,11 @@
 package cn.tedu.shoot;
 
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 /**
  * 大敌机
  */
-public class BigAirplane extends FlyingObject {
+public class BigAirplane extends FlyingObject implements EnemyScore {
     private int speed;
 
     public BigAirplane() {
@@ -33,5 +32,10 @@ public class BigAirplane extends FlyingObject {
     @Override
     public void step() {
         y += speed;
+    }
+
+    @Override
+    public int getScore() {
+        return 3;
     }
 }

@@ -49,6 +49,53 @@ public class Hero extends FlyingObject {
 
     @Override
     public void step() {
-        //TODO
+    }
+
+    /**
+     * 英雄机移动
+     *
+     * @param x 英雄机的x坐标
+     * @param y 英雄机的y坐标
+     */
+    public void moveTo(int x, int y) {
+        this.x = x - this.width / 2;
+        this.y = y - this.height / 2;
+    }
+
+    /**
+     * 英雄机增火力
+     */
+    public void addFire() {
+        fire += 40;
+    }
+
+    /**
+     * 英雄机增命
+     */
+    public void addLife() {
+        life++;
+    }
+
+    /**
+     * 英雄机减命
+     */
+    public void subtractLife() {
+        life--;
+    }
+
+    /**
+     * 获取英雄机命数
+     *
+     * @return life 命数
+     */
+    public int getLife() {
+        return life;
+    }
+
+    /**
+     * 火力清零
+     */
+    public void clearFire() {
+        fire = 0;
     }
 }

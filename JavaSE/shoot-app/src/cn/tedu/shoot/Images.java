@@ -14,8 +14,14 @@ public class Images {
     public static BufferedImage[] airs; //小敌机图片数组
     public static BufferedImage[] bairs;//大敌机图片数组
     public static BufferedImage[] bees; //小蜜蜂图片数组
+    public static BufferedImage start;
+    public static BufferedImage pause;
+    public static BufferedImage gameOver;
 
     static {
+        start = readImage("start.png");
+        pause = readImage("pause.png");
+        gameOver = readImage("gameover.png");
         sky = readImage("background.png");
         bullet = readImage("bullet.png");
 

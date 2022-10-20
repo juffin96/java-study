@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * 小蜜蜂类
  */
-public class Bee extends FlyingObject {
+public class Bee extends FlyingObject implements EnemyAward {
 
     private int xSpeed;    // x速度
     private int ySpeed;    // y速度
@@ -42,5 +42,10 @@ public class Bee extends FlyingObject {
             //切换方向
             xSpeed *= -1;
         }
+    }
+
+    @Override
+    public int getAwardType() {
+        return awardType;
     }
 }
