@@ -1,5 +1,8 @@
 package cn.tedu.submarine;
 
+/**
+ * 分的接口
+ */
 public interface EnemyScore {
-    public int getScore();
+    int getScore();
 }

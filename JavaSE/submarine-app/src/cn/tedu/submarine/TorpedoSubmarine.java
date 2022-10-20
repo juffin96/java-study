@@ -23,6 +23,6 @@ public class TorpedoSubmarine extends SeaObject implements EnemyScore {
 
     @Override
     public int getScore() {
-        return 1;
+        return 40;
     }
 }

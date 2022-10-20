@@ -1,5 +1,8 @@
 package cn.tedu.submarine;
 
+/**
+ * 命的接口
+ */
 public interface EnemyLife {
-    public int getLife();
+    int getLife();
 }
