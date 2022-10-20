@@ -31,7 +31,7 @@ public abstract class FlyingObject {
     /**
      * 专门给英雄机、天空、子弹提供的
      */
-    public FlyingObject(int width, int height, int x, int y){
+    public FlyingObject(int width, int height, int x, int y) {
         this.width = width;
         this.height = height;
         this.x = x;
@@ -43,16 +43,20 @@ public abstract class FlyingObject {
     /**
      * 判断对象是否活着、死了、删除的
      */
-    public boolean isLive(){
+    public boolean isLive() {
         return state == LIVE; //若当前状态为LIVE，表示对象是活着的，返回true，否则返回false
     }
-    public boolean isDead(){
+
+    public boolean isDead() {
         return state == DEAD;
     }
-    public boolean isRemove(){
+
+    public boolean isRemove() {
         return state == REMOVE;
     }
 
-    /** 飞行物移动 */
+    /**
+     * 飞行物移动
+     */
     public abstract void step();
 }

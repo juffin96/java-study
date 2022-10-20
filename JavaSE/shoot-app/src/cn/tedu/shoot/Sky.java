@@ -12,7 +12,7 @@ public class Sky extends FlyingObject {
     public Sky() {
         super(World.WIDTH, World.HEIGHT, 0, 0);
         speed = 1;
-        y1 = -700;
+        y1 = -World.HEIGHT;
     }
 
     public int getY1() {
