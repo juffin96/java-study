@@ -5,20 +5,24 @@ import javax.swing.ImageIcon;
 /**
  * 侦察潜艇
  */
-public class ObserveSubmarine extends SeaObject{
+public class ObserveSubmarine extends SeaObject implements EnemyScore {
 
     public ObserveSubmarine() {
         super(63, 19);
-
     }
 
     @Override
-    public void move(){
+    public void move() {
         x += speed;
     }
 
     @Override
     public ImageIcon readImage() {
         return Images.observeSubmarine;
+    }
+
+    @Override
+    public int getScore() {
+        return 1;
     }
 }

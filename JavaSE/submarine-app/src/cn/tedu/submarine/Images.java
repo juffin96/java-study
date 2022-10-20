@@ -1,7 +1,10 @@
 package cn.tedu.submarine;
 
 import javax.swing.ImageIcon;
-/** 图片类 */
+
+/**
+ * 图片类
+ */
 public class Images {
     public static ImageIcon sea;                 //海洋图
     public static ImageIcon gameOver;            //游戏结束图
@@ -24,8 +27,10 @@ public class Images {
         torpedoSubmarine = new ImageIcon("img/torpesubm.png");
     }
 
-    /** 测试图片是否读取成功 */
-    public static void main(String[] args){
+    /**
+     * 测试图片是否读取成功
+     */
+    public static void main(String[] args) {
         //getImageLoadStatus()返回值：2=MediaTracker.ABORTED 4=MediaTracker.ERRORED 8=MediaTracker.COMPLETE 1=MediaTracker.LOADING
         //返回值为8则表示读取成功
         System.out.println(sea.getImageLoadStatus());

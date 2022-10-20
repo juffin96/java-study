@@ -71,4 +71,32 @@ public abstract class SeaObject {
         }
     }
 
+    /**
+     * 是否超出边界
+     *
+     * @return true 超出边界
+     */
+    public boolean isOutOfBounds() {
+        return this.x >= World.WIDTH;
+    }
+
+    /**
+     * 物体碰撞
+     *
+     * @param other 另一个对象
+     * @return true 碰撞成功
+     */
+    public boolean isHit(SeaObject other) {
+        int x1 = this.x - other.width;
+        int x2 = this.x + this.width;
+        int y1 = this.y - other.height;
+        int y2 = this.y + this.height;
+        int x = other.x;
+        int y = other.y;
+        return x >= x1 && x <= x2 && y >= y1 && y <= y2;
+    }
+
+    public void goDead() {
+        state = DEAD;
+    }
 }

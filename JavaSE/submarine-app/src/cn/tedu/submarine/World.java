@@ -17,6 +17,10 @@ import java.util.TimerTask;
 public class World extends JPanel {
     public static final int WIDTH = 641;
     public static final int HEIGHT = 479;
+    public static final int RUNNING = 0;
+    public static final int PAUSE = 1;
+    public static final int GAME_OVER = 2;
+    private int state = RUNNING;
     //如下就是窗口中所看到的对象
     private static final Battleship ship = new Battleship();
     private static SeaObject[] submarines = {};
@@ -26,7 +30,8 @@ public class World extends JPanel {
 
     /**
      * 画笔
-     * @param g  the <code>Graphics</code> context in which to paint
+     *
+     * @param g the <code>Graphics</code> context in which to paint
      */
     @Override
     public void paint(Graphics g) {
@@ -46,15 +51,21 @@ public class World extends JPanel {
         for (int i = 0; i < bombs.length; i++) {
             bombs[i].paintImage(g);
         }
+        g.drawString("SCORE: " + score, 200, 50);
+        g.drawString("LIFE: " + ship.getLife(), 400, 50);
+        if (state == GAME_OVER) {
+            Images.gameOver.paintIcon(null, g, 0, 0);
+        }
     }
 
     /**
      * 生成潜艇对象
+     *
      * @return SeaObject 鱼雷潜艇、侦察潜艇、水雷潜艇
      */
-    private SeaObject nextSubmarine(){
+    private SeaObject nextSubmarine() {
         int random = new Random().nextInt(20);
-        if (random < 7){
+        if (random < 7) {
             return new ObserveSubmarine();
         } else if (random < 16) {
             return new TorpedoSubmarine();
@@ -66,9 +77,10 @@ public class World extends JPanel {
      * 潜艇进场
      */
     private int submarineEnterIndex = 0;
-    private void submarineEnterAction(){
+
+    private void submarineEnterAction() {
         submarineEnterIndex++;
-        if (submarineEnterIndex % 40 == 0){
+        if (submarineEnterIndex % 40 == 0) {
             SeaObject obj = nextSubmarine();
             submarines = Arrays.copyOf(submarines, submarines.length + 1);
             submarines[submarines.length - 1] = obj;
@@ -79,16 +91,41 @@ public class World extends JPanel {
      * 水雷进场
      */
     private int mineEnterIndex = 0;
+
     private void mineEnterAction() {
         mineEnterIndex++;
-        if (mineEnterIndex % 100 == 0){
+        if (mineEnterIndex % 100 == 0) {
             for (int i = 0; i < submarines.length; i++) {
-                MineSubmarine mineSubmarine = submarines[i] instanceof MineSubmarine ? ((MineSubmarine) submarines[i]) : null;
-                if (mineSubmarine != null){
-                    Mine mine = mineSubmarine.shootMine();
+                if (submarines[i] instanceof MineSubmarine) {
+                    MineSubmarine ms = (MineSubmarine) submarines[i];
+                    Mine obj = ms.shootMine();
                     mines = Arrays.copyOf(mines, mines.length + 1);
-                    mines[mines.length - 1] = mine;
+                    mines[mines.length - 1] = obj;
                 }
+            }
+        }
+    }
+
+    /**
+     * 销毁超出边界的物体
+     */
+    private void outOfBoundsAction() {
+        for (int i = 0; i < submarines.length; i++) {
+            if (submarines[i].isOutOfBounds() || submarines[i].isDead()) {
+                submarines[i] = submarines[submarines.length - 1];
+                submarines = Arrays.copyOf(submarines, submarines.length - 1);
+            }
+        }
+        for (int i = 0; i < mines.length; i++) {
+            if (mines[i].isOutOfBounds() || mines[i].isDead()) {
+                mines[i] = mines[mines.length - 1];
+                mines = Arrays.copyOf(mines, mines.length - 1);
+            }
+        }
+        for (int i = 0; i < bombs.length; i++) {
+            if (bombs[i].isOutOfBounds() || bombs[i].isDead()) {
+                bombs[i] = bombs[bombs.length - 1];
+                bombs = Arrays.copyOf(bombs, bombs.length - 1);
             }
         }
     }
@@ -96,7 +133,7 @@ public class World extends JPanel {
     /**
      * 移动
      */
-    private void moveAction(){
+    private void moveAction() {
         for (int i = 0; i < submarines.length; i++) {
             submarines[i].move();
         }
@@ -108,10 +145,81 @@ public class World extends JPanel {
         }
     }
 
+    private int score = 0;
+
+    private void bombBangAction() {
+        for (int i = 0; i < bombs.length; i++) {
+            Bomb b = bombs[i];
+            for (int j = 0; j < submarines.length; j++) {
+                SeaObject s = submarines[j];
+                if (b.isLive() && s.isLive() && s.isHit(b)) {
+                    s.goDead();
+                    b.goDead();
+                    //得分
+                    if (s instanceof EnemyScore) {
+                        EnemyScore es = (EnemyScore) s;
+                        score += es.getScore();
+                    }
+                    //增命
+                    if (s instanceof EnemyLife) {
+                        EnemyLife el = (EnemyLife) s;
+                        int num = el.getLife();
+                        ship.addLife(num);
+                    }
+                }
+            }
+        }
+    }
+
+    private void mineBangAction() {
+        for (int i = 0; i < mines.length; i++) {
+            Mine m = mines[i];
+            if (m.isLive() && ship.isLive() && m.isHit(ship)) {
+                m.goDead();
+                ship.subLife();
+            }
+        }
+    }
+
+    private void checkGameOverAction() {
+        if (ship.getLife() <= 0) {
+            state = GAME_OVER;
+        }
+    }
+
     /**
      * 启动程序的执行
      */
     private void action() {
+        KeyAdapter k = new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_P) {
+                    if (state == RUNNING) {
+                        state = PAUSE;
+                    } else if (state == PAUSE) {
+                        state = RUNNING;
+                    }
+                }
+                if (state == RUNNING) {
+                    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                        //战舰发射
+                        Bomb obj = ship.shootBomb();
+                        bombs = Arrays.copyOf(bombs, bombs.length + 1);
+                        bombs[bombs.length - 1] = obj;
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
+                        //战舰左移
+                        ship.moveLeft();
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
+                        //战舰右移
+                        ship.moveRight();
+                    }
+                }
+            }
+        };
+        this.addKeyListener(k);
         //创建定时器对象，定义间隔为10毫秒
         Timer timer = new Timer();
         int interval = 10;
@@ -119,13 +227,21 @@ public class World extends JPanel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                //各元素的进场
-                submarineEnterAction();
-                mineEnterAction();
-                //移动
-                moveAction();
-                //重画
-                repaint();
+                if (state == RUNNING) {
+                    //各元素的进场
+                    submarineEnterAction();
+                    mineEnterAction();
+                    //移动
+                    moveAction();
+                    //删除越界元素
+                    outOfBoundsAction();
+                    //炸弹爆炸
+                    bombBangAction();
+                    mineBangAction();
+                    checkGameOverAction();
+                    //重画
+                    repaint();
+                }
             }
         }, interval, interval);
     }
@@ -145,16 +261,5 @@ public class World extends JPanel {
         //会自动调用paint()方法
         frame.setVisible(true);
         world.action();
-        world.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A'){
-                    ship.x -= ship.speed;
-                }
-                if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D'){
-                    ship.x += ship.speed;
-                }
-            }
-        });
     }
 }
