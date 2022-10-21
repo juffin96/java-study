@@ -2,8 +2,9 @@ package cn.tedu.submarine;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.ImageIcon;
 import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class World extends JPanel {
     public static final int PAUSE = 1;
     public static final int GAME_OVER = 2;
     private int state = RUNNING;
-    private static final Battleship ship = new Battleship();
+    private static Battleship ship = new Battleship();
     private static SeaObject[] submarines = {};
     private static Mine[] mines = {};
     private static Bomb[] bombs = {};
@@ -34,6 +35,9 @@ public class World extends JPanel {
      */
     @Override
     public void paint(Graphics g) {
+        //设置字体和颜色
+        g.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        g.setColor(Color.BLUE);
         //画海洋
         Images.sea.paintIcon(null, g, 0, 0);
         //画战舰
@@ -50,7 +54,7 @@ public class World extends JPanel {
         for (int i = 0; i < bombs.length; i++) {
             bombs[i].paintImage(g);
         }
-        g.drawString("SCORE: " + score, 200, 50);
+        g.drawString("SCORE: " + score, 150, 50);
         g.drawString("LIFE: " + ship.getLife(), 400, 50);
         if (state == GAME_OVER) {
             Images.gameOver.paintIcon(null, g, 0, 0);
@@ -202,7 +206,7 @@ public class World extends JPanel {
     private void action() {
         //生成监听器
         KeyAdapter k = new KeyAdapter() {
-            //重写键盘按下事件
+            //重写键盘松开事件
             @Override
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_P) {
@@ -229,12 +233,27 @@ public class World extends JPanel {
                     }
                 }
             }
+
+            //重写键盘按下事件
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (state == GAME_OVER) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        state = RUNNING;
+                        submarines = new SeaObject[0];
+                        mines = new Mine[0];
+                        bombs = new Bomb[0];
+                        ship = new Battleship();
+                        score = 0;
+                    }
+                }
+            }
         };
         this.addKeyListener(k);
         //创建定时器对象，定义间隔为10毫秒
         Timer timer = new Timer();
         int interval = 10;
-        //匿名内部类new TImeTask(){}
+        //匿名内部类new TimeTask(){}
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -268,7 +287,7 @@ public class World extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(WIDTH + 6, HEIGHT + 29);
         frame.setTitle("潜艇大战");
-        frame.setIconImage(new ImageIcon("img/mine.png").getImage());
+        frame.setIconImage(Images.mine.getImage());
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         //会自动调用paint()方法
