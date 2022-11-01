@@ -9,7 +9,7 @@ import java.io.FileOutputStream;
  */
 public class FOSDemo {
     public static void main(String[] args) throws Exception {
-        FileOutputStream fos = new FileOutputStream("./fos.dat");
+        FileOutputStream fos = new FileOutputStream("./demo.txt");
         for (int i = 0; i < 26; i++) {
             fos.write(97 + i);
         }
