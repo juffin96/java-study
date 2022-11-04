@@ -1,10 +1,15 @@
 package socket;
 
-import java.io.IOException;
+import io.PrintDemo;
+
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 /**
  * 客户端
+ *
  * @author Chen
  */
 public class Client {
@@ -13,6 +18,7 @@ public class Client {
      * 并获取两条流（一条输入、一条输出）进行读写完成与远端计算机的交互。
      */
     private Socket socket;
+
     /**
      * 初始化客户端
      */
@@ -36,7 +42,25 @@ public class Client {
      * 启动客户端
      */
     public void start() {
-
+        try {
+            /*
+             * 获取一个字节输出流，使用这个流可以将数据发送给对方
+             */
+            OutputStream out = socket.getOutputStream();
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8)), true);
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                String line = scanner.nextLine();
+                if ("exit".equalsIgnoreCase(line)) {
+                    socket.close();
+                    pw.close();
+                    return;
+                }
+                pw.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
