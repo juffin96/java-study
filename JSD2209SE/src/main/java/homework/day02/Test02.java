@@ -13,7 +13,7 @@ public class Test02 {
         FileOutputStream fos = new FileOutputStream("test_cp.txt");
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         int d;
-        if ((d = bis.read()) != -1) {
+        while ((d = bis.read()) != -1) {
             bos.write(d);
         }
         System.out.println("复制完毕");

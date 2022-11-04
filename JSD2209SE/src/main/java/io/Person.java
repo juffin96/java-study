@@ -10,10 +10,12 @@ import java.util.Arrays;
  * 3.要有公开的无参构造器
  */
 public class Person implements Serializable {
+
+    private static final long serialVersionUID = 123L;
     private String name;
     private int age;
     private String gender;
-    private String[] otherInfo;
+    private transient String[] otherInfo;
 
     public Person() {
     }
