@@ -39,18 +39,48 @@ public class Server {
              * 该方法用于接收客户端的连接并返回一个Socket实例，使用这个实例就可以与连接的客户端双向通讯了
              * 注意：该方法是一个阻塞方法，如果调用时暂没有客户端连接，此时该方法会一致等待，知道一个客户端连接为止
              */
-            System.out.println("等待客户端连接...");
-            Socket socket = serverSocket.accept();
-            System.out.println("一个客户端连接了！");
-            InputStream in = socket.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            String s;
-            while ((s = br.readLine()) != null) {
-                System.out.println("客户端：" + s);
+            while (true) {
+                System.out.println("等待客户端连接...");
+                Socket socket = serverSocket.accept();
+                System.out.println("一个客户端连接了！");
+
+                ClientHandler handler = new ClientHandler(socket);
+                Thread t = new Thread(handler);
+                t.start();
             }
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 该线程任务是负责与指定的客户端进行交互
+     */
+    private class ClientHandler implements Runnable {
+        private Socket socket;
+
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            try {
+                InputStream in = socket.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+                String message;
+                while ((message = br.readLine()) != null) {
+                    System.out.println("客户端" + Thread.currentThread().getName() + " ==> " + message);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

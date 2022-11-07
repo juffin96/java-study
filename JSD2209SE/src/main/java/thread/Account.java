@@ -1,8 +1,13 @@
 package thread;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Account {
     private String cardId;
     private double money;
+    // 同步锁对象
+    private final Lock lock = new ReentrantLock();
 
     public Account() {
     }
@@ -12,7 +17,25 @@ public class Account {
         this.money = money;
     }
 
-    public void drawMoney(double money) {
+//    public void drawMoney(double money) {
+//        lock.lock();
+//        try {
+//            String name = Thread.currentThread().getName();
+//            if (this.money >= money) {
+//                System.out.println(name + "取钱成功，吐出" + money);
+//                this.money -= money;
+//                System.out.println(name + "取钱后剩余：" + this.money);
+//            } else {
+//                System.out.println(name + "来取钱，余额不足！");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            lock.unlock();
+//        }
+//    }
+
+    public synchronized void drawMoney(double money) {
         String name = Thread.currentThread().getName();
         if (this.money >= money) {
             System.out.println(name + "取钱成功，吐出" + money);
@@ -25,6 +48,7 @@ public class Account {
 
     /**
      * 获取
+     *
      * @return cardId
      */
     public String getCardId() {
@@ -33,6 +57,7 @@ public class Account {
 
     /**
      * 设置
+     *
      * @param cardId
      */
     public void setCardId(String cardId) {
@@ -41,6 +66,7 @@ public class Account {
 
     /**
      * 获取
+     *
      * @return money
      */
     public double getMoney() {
@@ -49,6 +75,7 @@ public class Account {
 
     /**
      * 设置
+     *
      * @param money
      */
     public void setMoney(double money) {
