@@ -41,8 +41,12 @@ public class Client {
     /**
      * 启动客户端
      */
-    public void start() {
+    public synchronized void start() {
         try {
+            ServerHandler handler = new ServerHandler();
+            Thread t = new Thread(handler);
+            t.setDaemon(true);
+            t.start();
             /*
              * 获取一个字节输出流，使用这个流可以将数据发送给对方
              */
@@ -52,14 +56,35 @@ public class Client {
             while (true) {
                 String line = scanner.nextLine();
                 if ("exit".equalsIgnoreCase(line)) {
-                    socket.close();
                     pw.close();
-                    return;
+                    break;
                 }
                 pw.println(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class ServerHandler implements Runnable {
+        @Override
+        public void run() {
+            try {
+                InputStream in = socket.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -67,4 +92,5 @@ public class Client {
         Client client = new Client();
         client.start();
     }
+
 }

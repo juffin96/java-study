@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Server {
     /**
@@ -14,6 +17,11 @@ public class Server {
      * ServerSocket相当于是“总机”。
      */
     private ServerSocket serverSocket;
+
+    /**
+     * 该集合用于存放所有客户端的输出流
+     */
+    private List<PrintWriter> allOut = Collections.synchronizedList(new ArrayList<>());
 
     public Server() {
         try {
@@ -58,29 +66,50 @@ public class Server {
      */
     private class ClientHandler implements Runnable {
         private Socket socket;
+        private String host; // 记录当前客户端的IP地址
 
         public ClientHandler(Socket socket) {
             this.socket = socket;
+            // host获取远端计算机的IP地址信息
+            host = socket.getInetAddress().getHostAddress();
         }
 
         @Override
         public void run() {
+            PrintWriter pw = null;
             try {
                 InputStream in = socket.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+                OutputStream out = socket.getOutputStream();
+                pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8)), true);
+                // 将对应该客户端的输入流存入共享集合
+                allOut.add(pw);
+
+                // 广播该客户端上线的操作
+                sendMessage(host + "上线了，当前在线人数：" + allOut.size());
+
                 String message;
                 while ((message = br.readLine()) != null) {
-                    System.out.println("客户端" + Thread.currentThread().getName() + " ==> " + message);
+                    sendMessage("客户端" + host + " ==> " + message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
+                // 处理客户端断开连接后的操作
+                allOut.remove(pw);
+
+                sendMessage(host + "下线了，当前人数：" + allOut.size());
                 try {
                     socket.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
             }
+        }
+
+        private void sendMessage(String line) {
+            System.out.println(line);
+            allOut.forEach(p -> p.println(line));
         }
     }
 
